@@ -1,4 +1,5 @@
 -- Workshop 1 a.
+use Northwind;
 
 select * from Shippers;
 
