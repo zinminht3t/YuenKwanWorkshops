@@ -188,7 +188,21 @@ in
 (select s.city from Suppliers s);
 
 --27 a
+select CompanyName, Address, Phone
+from Customers
+UNION
+select CompanyName, Address, Phone
+from Suppliers; 
+
 --27 b
+select CompanyName, Address, Phone
+from Customers
+UNION
+select CompanyName, Address, Phone
+from Suppliers
+UNION
+select CompanyName, NULL, Phone
+from Shippers;
 
 --28
 select 
@@ -198,3 +212,77 @@ on e.EmployeeID = o.EmployeeID
 where o.OrderID = 10248;
 
 --29
+select ProductID, ProductName, UnitPrice
+from Products
+where UnitPrice >
+(select avg(UnitPrice)
+from Products);
+
+--30
+select OrderID, sum(UnitPrice * Quantity) as Amount
+from [Order Details]
+group by OrderID
+having sum(UnitPrice * Quantity) > 10000;
+
+--31
+select OrderID, CustomerID
+from Orders
+where OrderID in
+(select OrderID
+from [Order Details]
+group by OrderID
+having sum(UnitPrice * Quantity) > 10000);
+
+--32
+select o.OrderID, c.CustomerID, c.CompanyName
+from Orders o, Customers c
+where c.CustomerID = o.CustomerID
+and o.OrderID in
+(select OrderID
+from [Order Details]
+group by OrderID
+having sum(UnitPrice * Quantity) > 10000);
+
+--33
+select o.CustomerID, sum(od.UnitPrice * od.Quantity) as Amount
+from Orders o, [Order Details] od
+where o.OrderID = od.OrderID
+group by o.CustomerID;
+
+--34
+select AVG(R.Amount) as AverageAmount
+from
+(select o.CustomerID, sum(od.UnitPrice * od.Quantity) as Amount
+from Orders o, [Order Details] od
+where o.OrderID = od.OrderID
+group by o.CustomerID) as R;
+
+select sum(od.UnitPrice * od.Quantity) / count (distinct o.CustomerID) as AverageAmount
+from Orders o, [Order Details] od
+where o.OrderID = od.OrderID;
+
+--35
+select c.CustomerID, c.CompanyName
+from Customers c, Orders o, [Order Details] od
+where c.CustomerID = o.CustomerID
+and o.OrderID = od.OrderID
+group by c.CustomerID, c.CompanyName
+having sum(od.UnitPrice * od.Quantity)
+>
+(select AVG(R.Amount) as AverageAmount
+from
+(select o.CustomerID, sum(od.UnitPrice * od.Quantity) as Amount
+from Orders o, [Order Details] od
+where o.OrderID = od.OrderID
+group by o.CustomerID) as R);
+
+--36
+select o.CustomerID, sum(od.UnitPrice * od.Quantity) as Amount
+from Orders o, [Order Details] od
+where o.OrderID = od.OrderID
+and year(o.OrderDate) = 1997
+group by o.CustomerID;
+
+
+
+ 
