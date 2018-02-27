@@ -12,8 +12,8 @@ Primary Key (MemberCategory)
 insert into MemberCategories
 (MemberCategory, MemberCatDescription)
 values ('A', 'Class A Members'),
-values ('B', 'Class B Members'),
-values ('C', 'Class C Members');
+('B', 'Class B Members'),
+('C', 'Class C Members');
 
 --3
 create table GoodCustomers
@@ -23,12 +23,12 @@ Address nvarchar(65),
 PhoneNumber nvarchar(9),
 MemberCategory nvarchar(2),
 Primary Key (CustomerName, PhoneNumber),
-Foreign Key MemberCategory references MemberCategories(MemberCategory)
+Foreign Key (MemberCategory) references MemberCategories(MemberCategory)
 );
 
 --4
 INSERT INTO GoodCustomers
-CustomerName, PhoneNumber, MemberCategory)
+(CustomerName, PhoneNumber, MemberCategory)
 SELECT CustomerName, PhoneNumber, MemberCategory
 FROM Customers 
 WHERE MemberCategory IN ('A', 'B');
@@ -74,7 +74,7 @@ WHERE MemberCategory = 'B';
 
 --12
 ALTER TABLE GoodCustomers
-ADD COLUMN FaxNumber NVARCHAR(80);
+ADD FaxNumber NVARCHAR(80);
 
 --13
 ALTER Table GoodCustomers
@@ -82,11 +82,11 @@ ALTER COLUMN Address nvarchar(80);
 
 --14
 ALTER TABLE GoodCustomers
-ADD COLUMN ICNumber nvarchar(10);
+ADD ICNumber nvarchar(10);
 
+select * from GoodCustomers;
 --15
-CREATE UNIQUE INDEX ICIndex ON GoodCustomers
-(ICNumber);
+CREATE UNIQUE INDEX ICIndex ON GoodCustomers([Address]);
 
 --16
 CREATE INDEX faxindex ON GoodCustomers (FaxNumber);
@@ -102,7 +102,7 @@ DROP COLUMN FaxNumber;
 DELETE FROM GoodCustomers;
 
 --20
-DROP TABLE GoodCustomer;
+DROP TABLE GoodCustomers;
 
 
 

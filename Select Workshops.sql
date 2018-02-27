@@ -1,12 +1,19 @@
 -- Workshop 1 a.
 use Northwind;
 
+
+--1 a.
+--List all details of all Shippers that the company is dealing with.
 select * from Shippers;
 
 -- 1 b.
+--List all details of Shippers with the output presented in ascending order of shipper
+--names.
 select * from Shippers order by CompanyName asc;
 
 -- 2 a.
+--List all employees - you need to display only the details of their First Name, Last
+--Name, Title, Date of birth and their city of residence
 select FirstName, LastName, Title, BirthDate, Country from Employees;
 
 -- 2 b.
@@ -283,6 +290,3 @@ where o.OrderID = od.OrderID
 and year(o.OrderDate) = 1997
 group by o.CustomerID;
 
-
-
- 
